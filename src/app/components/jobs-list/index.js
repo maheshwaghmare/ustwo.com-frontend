@@ -48,22 +48,26 @@ const JobsList = React.createClass({
     return studio.color;
   },
   render() {
-    const { jobs, studio, contactEmail } = this.props;
+    const { jobs, studio, contactEmail, className } = this.props;
     let list;
     if (jobs.length) {
-      list = <ul className="jobs-list">
-        {jobs.map(this.renderJobItem)}
-      </ul>;
+      list = (
+        <ul className={`jobs-list ${className}`} ref="jobsList">
+          {jobs.map(this.renderJobItem)}
+        </ul>
+      );
     } else {
-      list = <div className="jobs-none">
-        <p>We don’t have any specific openings at the moment, but we’re always on the lookout for talented individuals to join the ustwo family. If that’s you, let us know.</p>
-        <a
-          style={{backgroundColor: studio.color}}
-          href={contactEmail.length ? `${contactEmail}?subject=${studio.name} Jobs` : ''}
-        >
-          Get in touch
-        </a>
-      </div>;
+      list = (
+        <div className="jobs-none">
+          <p>We don’t have any specific openings at the moment, but we’re always on the lookout for talented individuals to join the ustwo family. If that’s you, let us know.</p>
+          <a
+            style={{backgroundColor: studio.color}}
+            href={contactEmail.length ? `${contactEmail}?subject=${studio.name} Jobs` : ''}
+          >
+            Get in touch
+          </a>
+        </div>
+      );
     }
     return list;
   }

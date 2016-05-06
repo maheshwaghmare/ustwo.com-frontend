@@ -117,12 +117,18 @@
     }
   }
 
-  .jobs-container {
-    max-width: 1120px;
-    margin: 0 auto;
-  }
-
   @media screen and (min-width: $bp-medium) {
+    .jobs-container {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .studio-jobs {
+      position: relative;
+      min-height: 75px;
+      transition: height .64s ease-in-out;
+    }
+
     .grid {
       padding-top: 0;
     }

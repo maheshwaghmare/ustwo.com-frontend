@@ -1,0 +1,26 @@
+/*
+ *  PAGE: JOBS LIST
+ *  List of job items
+ *
+ */
+
+.jobs-list {
+  position: absolute;
+  width: 100%;
+  transition: all .32s ease-in-out;
+
+  &.add {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  &.show {
+    transition-delay: .32s;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  &.hide {
+    transition-delay: 0s;
+    opacity: 0;
+    transform: translateY(50px);
+  }
+}

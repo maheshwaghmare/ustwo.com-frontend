@@ -82,6 +82,9 @@
   }
 
   @media screen and (min-width: $bp-medium) {
+    max-width: 1120px;
+    margin: 0 auto;
+
     // display: none;
     //
     // &.selected {
