@@ -82,11 +82,11 @@
   }
 
   @media screen and (min-width: $bp-medium) {
-    display: none;
-
-    &.selected {
-      display: block;
-    }
+    // display: none;
+    //
+    // &.selected {
+    //   display: block;
+    // }
 
     &.all-studios-jobs {
       .studio-info {
@@ -99,7 +99,7 @@
     }
 
     .studio-info {
-      display: flex;
+      // display: flex;
 
       > div {
         width: 50%;

@@ -134,37 +134,64 @@ const PageJoinUs = React.createClass({
     };
   },
   renderStudioJobs(selectedStudioSlug) {
-    return map(this.props.studios, studio => {
-      const id = kebabCase(studio.name);
-      const studioSlug = kebabCase(studio.name);
-      const classes = classnames('studio-jobs', `${id}-jobs`, {
-        selected: studioSlug === selectedStudioSlug
-      });
-      const image = getFeaturedImage(studio);
+    // return map(this.props.studios, studio => {
+    //   const id = kebabCase(studio.name);
+    //   const studioSlug = kebabCase(studio.name);
+    //   const classes = classnames('studio-jobs', `${id}-jobs`, {
+    //     selected: studioSlug === selectedStudioSlug
+    //   });
+    // id={`tab-content-${id}`}
       return (
-        <div className={classes}>
-          <h3>{studio.name}</h3>
-          <div className="tab-content" id={`tab-content-${id}`}>
+        <div className="studio-jobs">
+          {this.renderStudioNames()}
+          <div className="tab-content">
             <div className="studio-info">
-              <div className="info" style={{ backgroundColor: studio.color }}>
-                <p className="excerpt">{get(studio, 'recruitment-title')}</p>
-                <p className="studio-blurb">{get(studio, 'recruitment-desc')}</p>
-              </div>
-              <Rimage
-                className="photo"
-                wrap="div"
-                sizes={get(image, 'media_details.sizes')}
-                altText={get(image, 'alt_text')}
-              />
+              {this.renderStudioInfos()}
+              {this.renderStudioImages()}
             </div>
-            <JobsList
-              key={`jobs-${studioSlug}`}
-              studio={studio}
-              studios={this.props.studios}
-              jobs={this.getJobsForStudio(studio)}
-              contactEmail={get(find(get(find(get(this.props, 'footer.contacts', []), 'type', 'general'), 'methods', []), 'type', 'email'), 'uri', '')} />
+            {map(this.props.studios, studio => {
+              const studioSlug = kebabCase(studio.name);
+              return (
+                <JobsList
+                  key={`jobs-${studioSlug}`}
+                  studio={studio}
+                  studios={this.props.studios}
+                  jobs={this.getJobsForStudio(studio)}
+                  contactEmail={get(find(get(find(get(this.props, 'footer.contacts', []), 'type', 'general'), 'methods', []), 'type', 'email'), 'uri', '')} />
+              );
+            })};
           </div>
         </div>
+      );
+    // });
+  },
+  renderStudioNames() {
+    return map(this.props.studios, studio => {
+      return (
+        <h3>{studio.name}</h3>
+      );
+    });
+  },
+  renderStudioInfos() {
+    return map(this.props.studios, studio => {
+      return (
+        <div className="info" style={{ backgroundColor: studio.color }}>
+          <p className="excerpt">{get(studio, 'recruitment-title')}</p>
+          <p className="studio-blurb">{get(studio, 'recruitment-desc')}</p>
+        </div>
+      );
+    });
+  },
+  renderStudioImages() {
+    return map(this.props.studios, studio => {
+      const image = getFeaturedImage(studio);
+      return (
+        <Rimage
+          className="photo"
+          wrap="div"
+          sizes={get(image, 'media_details.sizes')}
+          altText={get(image, 'alt_text')}
+        />
       );
     });
   },
