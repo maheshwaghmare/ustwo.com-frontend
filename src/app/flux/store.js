@@ -25,6 +25,7 @@ const _state = Object.assign({
   postsPagination: Defaults.postsPagination,
   postsPaginationTotal: Nulls.postsPaginationTotal,
   eventsStudio: Defaults.eventsStudio,
+  jobItemOpen: Defaults.jobItemOpen,
   relatedContent: []
 }, window.state);
 if(_state.takeover && window.localStorage.getItem('takeover-'+_state.takeover.id)) {
@@ -123,9 +124,9 @@ const Store = Object.assign(
         // - it exists in the store with a different slug OR
         // - posts have a different blog category
         // - events have a different studio
-        return (!_state[item.type] 
-                || (item.slug && _state[item.type].slug && _state[item.type].slug !== item.slug) 
-                || (item.slug && item.slug.match(/posts\/\w+/) && item.slug.split('/')[1] !== _state.blogCategory) 
+        return (!_state[item.type]
+                || (item.slug && _state[item.type].slug && _state[item.type].slug !== item.slug)
+                || (item.slug && item.slug.match(/posts\/\w+/) && item.slug.split('/')[1] !== _state.blogCategory)
                 || (item.slug && item.slug !== _state.eventsStudio))
       });
 
@@ -181,13 +182,21 @@ const Store = Object.assign(
     getJobDetails(jid) {
       const job = find(_state.jobs, 'shortcode', jid);
       if(job.description) {
+        _state.jobItemOpen = true;
         Store.emit('change', _state);
       } else {
         DataLoader([{
           url: `ustwo/v1/jobs/${jid}`,
           type: 'job'
-        }], applyJobDetailData).then(() => Store.emit('change', _state));
+        }], applyJobDetailData).then(() => {
+          _state.jobItemOpen = true;
+          Store.emit('change', _state);
+        });
       }
+    },
+    resetJobOpen() {
+      _state.jobItemOpen = false;
+      Store.emit('change', _state);
     },
     showSearch() {
       _state.searchMode = true;

@@ -85,12 +85,6 @@
     max-width: 1120px;
     margin: 0 auto;
 
-    // display: none;
-    //
-    // &.selected {
-    //   display: block;
-    // }
-
     &.all-studios-jobs {
       .studio-info {
         display: none;
@@ -102,7 +96,7 @@
     }
 
     .studio-info {
-      // display: flex;
+      display: flex;
 
       > div {
         width: 50%;
@@ -138,17 +132,6 @@
 
       .photo {
         height: auto;
-      }
-    }
-    .jobs-none {
-      p {
-        width: 65%;
-      }
-      a {
-        position: absolute;
-        right: 30px;
-        top: 50%;
-        margin-top: -20px;
       }
     }
   }

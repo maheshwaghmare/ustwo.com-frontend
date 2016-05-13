@@ -33,6 +33,7 @@ const JobsList = React.createClass({
       const jid = job.shortcode;
       if (this.state.selectedJob === jid) {
         this.setState({ selectedJob: null });
+        Flux.resetJobOpen();
       } else {
         this.setState({ selectedJob: jid });
         Flux.getJobDetails(jid);
@@ -49,16 +50,13 @@ const JobsList = React.createClass({
   },
   render() {
     const { jobs, studio, contactEmail, className } = this.props;
-    let list;
+
+    let output;
     if (jobs.length) {
-      list = (
-        <ul className={`jobs-list ${className}`} ref="jobsList">
-          {jobs.map(this.renderJobItem)}
-        </ul>
-      );
+      output = jobs.map(this.renderJobItem);
     } else {
-      list = (
-        <div className="jobs-none">
+      output = (
+        <li className="jobs-none">
           <p>We don’t have any specific openings at the moment, but we’re always on the lookout for talented individuals to join the ustwo family. If that’s you, let us know.</p>
           <a
             style={{backgroundColor: studio.color}}
@@ -66,10 +64,15 @@ const JobsList = React.createClass({
           >
             Get in touch
           </a>
-        </div>
+        </li>
       );
     }
-    return list;
+
+    return (
+      <ul className={`jobs-list ${className}`} ref="jobsList">
+        {output}
+      </ul>
+    );
   }
 });
 

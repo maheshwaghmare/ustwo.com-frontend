@@ -35,7 +35,7 @@ function getSelectedStudio(studioSlugFromUrl, studioSlugs) {
 const PageJoinUs = React.createClass({
   mixins: [getScrollTrackerMixin('join-us')],
   render() {
-    const { page, currentParams, studios } = this.props;
+    const { page, currentParams, studios, openJobItem } = this.props;
     const classes = classnames('page-join-us', this.props.className);
     const image = getFeaturedImage(page);
     const studioSlugFromUrl = get(currentParams, 'lid');
@@ -67,16 +67,18 @@ const PageJoinUs = React.createClass({
     );
   },
   componentDidUpdate() {
-    let getActiveTab = React.findDOMNode(this.refs.activeTab);
-    let getUnderline = React.findDOMNode(this.refs.underline);
+    const { jobItemOpen } = this.props;
 
-    getUnderline.style.width = `${getActiveTab.offsetWidth}px`;
-    getUnderline.style.left = `${getActiveTab.offsetLeft}px`;
+    const activeTab = React.findDOMNode(this.refs.activeTab);
+    const tabUnderline = React.findDOMNode(this.refs.underline);
+    const studioTab = React.findDOMNode(this.refs.studioTab);
+    const infoHeight = studioTab.querySelector('div', '[class="studio-info"]').offsetHeight;
+    const jobsListHeight = studioTab.querySelector('ul', '[class="jobs-list"]').offsetHeight;
 
-    let getstudioJobs = React.findDOMNode(this.refs.studioJobs);
-    let jobsListHeight = getstudioJobs.querySelector('ul', '[class="jobs-list"]').offsetHeight;
-    getstudioJobs.style.height = `${jobsListHeight}px`;
+    tabUnderline.style.width = `${activeTab.offsetWidth}px`;
+    tabUnderline.style.left = `${activeTab.offsetLeft}px`;
 
+    studioTab.style.height = `${jobsListHeight + infoHeight}px`;
   },
   handleClick() {
     let getStudioTabs = React.findDOMNode(this.refs.studioTabs);
@@ -141,33 +143,55 @@ const PageJoinUs = React.createClass({
   },
   renderStudioJobs(selectedStudioSlug) {
 
-      // const classes = classnames('studio-jobs', `${id}-jobs`, {
-      //   selected: studioSlug === selectedStudioSlug
-      // });
+    // const classes = classnames('studio-jobs', `${id}-jobs`, {
+    //   selected: studioSlug === selectedStudioSlug
+    // });
 
-      let joblist;
-      map(this.props.studios, studio => {
-        const studioSlug = kebabCase(studio.name);
-        if (studioSlug === selectedStudioSlug) {
-          joblist = <JobsList
+    let joblist;
+    let studioInfo;
+    let studioImage;
+    map(this.props.studios, studio => {
+      const studioSlug = kebabCase(studio.name);
+      if (studioSlug === selectedStudioSlug) {
+        const image = getFeaturedImage(studio);
+        joblist = (
+          <JobsList
             key={`jobs-${studioSlug}`}
             studio={studio}
             ref="jobsList"
             studios={this.props.studios}
             jobs={this.getJobsForStudio(studio)}
             contactEmail={get(find(get(find(get(this.props, 'footer.contacts', []), 'type', 'general'), 'methods', []), 'type', 'email'), 'uri', '')} />
-        }
-      });
+        );
+        studioInfo = (
+          <div className="info" style={{ backgroundColor: studio.color }}>
+            <p className="excerpt">{get(studio, 'recruitment-title')}</p>
+            <p className="studio-blurb">{get(studio, 'recruitment-desc')}</p>
+          </div>
+        );
+        studioImage = (
+          <Rimage
+            className="photo"
+            wrap="div"
+            sizes={get(image, 'media_details.sizes')}
+            altText={get(image, 'alt_text')} />
+        );
+      }
+    });
 
-      return (
-        <TransitionManager
-          component="div"
-          duration={1000}
-          className="studio-jobs"
-          ref="studioJobs">
-          {joblist}
-        </TransitionManager>
-      );
+    return (
+      <TransitionManager
+        component="div"
+        duration={1000}
+        className="studio-jobs"
+        ref="studioTab">
+        <div className="studio-info" ref="studioInfo">
+          {studioInfo}
+          {studioImage}
+        </div>
+        {joblist}
+      </TransitionManager>
+    );
   },
   // renderStudioNames() {
   //   return map(this.props.studios, studio => {

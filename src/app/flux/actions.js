@@ -28,6 +28,9 @@ const Actions = {
   getJobDetails(jid) {
     Store.getJobDetails(jid);
   },
+  resetJobOpen() {
+    Store.resetJobOpen();
+  },
   showSearch() {
     Store.showSearch();
   },

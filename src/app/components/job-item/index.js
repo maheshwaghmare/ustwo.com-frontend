@@ -5,6 +5,8 @@ import classnames from 'classnames';
 import ellipsize from 'ellipsize';
 import get from 'lodash/object/get';
 
+import Flux from 'app/flux';
+
 import SVG from 'app/components/svg';
 
 const JobItem = React.createClass({
