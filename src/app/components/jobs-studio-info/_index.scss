@@ -1,0 +1,98 @@
+/*
+ *  JOBS STUDIO INFO
+ *
+ *
+ */
+
+.jobs-studio-info {
+  background: #777;
+
+  p {
+    margin: 0;
+  }
+  .excerpt {
+    padding: 10px 15px;
+    color: #fff;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  .studio-blurb {
+    display: none;
+  }
+  .photo {
+    height: 200px;
+  }
+
+  @media screen and (min-width: $bp-medium) {
+    display: flex;
+    height: 320px;
+    overflow: hidden;
+
+    > div {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 320px;
+      overflow: hidden;
+      transition: all .32s linear;
+    }
+
+    &.add {
+      > div {
+        // opacity: 0;
+        transform: translateY(320px);
+      }
+    }
+
+    &.show {
+      > div {
+        // opacity: 1;
+        transform: translateY(0);
+        // transition-delay: .32s;
+      }
+    }
+
+    &.hide {
+      > div {
+        // opacity: 0;
+        transform: translateY(-320px);
+        transition-delay: 0s !important;
+        // transition-duration: .16s;
+      }
+    }
+
+    .info {
+      left: 0;
+      padding: 40px;
+    }
+
+    .excerpt {
+      padding: 0;
+      background: transparent;
+      font-size: 26px;
+    }
+
+    .studio-blurb {
+      position: relative;
+      display: block;
+      margin-top: 40px;
+      font-size: 16px;
+      color: #fff;
+
+      &:before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: 0;
+        width: 22px;
+        height: 2px;
+        background: #fff;
+      }
+    }
+
+    .photo {
+      height: auto;
+      right: 0;
+    }
+  }
+}

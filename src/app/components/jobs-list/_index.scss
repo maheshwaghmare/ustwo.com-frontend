@@ -64,9 +64,9 @@
   &.show {
     .jobs-none,
     .job-item {
-      transition-delay: .32s;
       opacity: 1;
       transform: translateY(0);
+      transition-delay: .32s;
 
       &:nth-child(2) {
         transition-delay: .32s + $acc;
@@ -98,10 +98,10 @@
   &.hide {
     .jobs-none,
     .job-item {
-      transition-delay: 0s !important;
-      transition-duration: .16s;
       opacity: 0;
       transform: translateY(50px);
+      transition-delay: 0s !important;
+      transition-duration: .16s;
     }
   }
 

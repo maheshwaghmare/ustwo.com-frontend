@@ -19,6 +19,7 @@ import DownChevron from 'app/components/down-chevron';
 import SVG from 'app/components/svg';
 import Hero from 'app/components/hero';
 import StudioJobs from 'app/components/studio-jobs';
+import JobsStudioInfo from 'app/components/jobs-studio-info';
 import JobsList from 'app/components/jobs-list';
 import Rimage from 'app/components/rimage';
 import Video from 'app/components/video';
@@ -72,7 +73,7 @@ const PageJoinUs = React.createClass({
     const activeTab = React.findDOMNode(this.refs.activeTab);
     const tabUnderline = React.findDOMNode(this.refs.underline);
     const studioTab = React.findDOMNode(this.refs.studioTab);
-    const infoHeight = studioTab.querySelector('div', '[class="studio-info"]').offsetHeight;
+    const infoHeight = studioTab.querySelector('div', '[class="jobs-studio-info"]').offsetHeight;
     const jobsListHeight = studioTab.querySelector('ul', '[class="jobs-list"]').offsetHeight;
 
     tabUnderline.style.width = `${activeTab.offsetWidth}px`;
@@ -149,7 +150,6 @@ const PageJoinUs = React.createClass({
 
     let joblist;
     let studioInfo;
-    let studioImage;
     map(this.props.studios, studio => {
       const studioSlug = kebabCase(studio.name);
       if (studioSlug === selectedStudioSlug) {
@@ -164,17 +164,10 @@ const PageJoinUs = React.createClass({
             contactEmail={get(find(get(find(get(this.props, 'footer.contacts', []), 'type', 'general'), 'methods', []), 'type', 'email'), 'uri', '')} />
         );
         studioInfo = (
-          <div className="info" style={{ backgroundColor: studio.color }}>
-            <p className="excerpt">{get(studio, 'recruitment-title')}</p>
-            <p className="studio-blurb">{get(studio, 'recruitment-desc')}</p>
-          </div>
-        );
-        studioImage = (
-          <Rimage
-            className="photo"
-            wrap="div"
-            sizes={get(image, 'media_details.sizes')}
-            altText={get(image, 'alt_text')} />
+          <JobsStudioInfo
+            key={`studio-info-${studioSlug}`}
+            studio={studio}
+            image={image} />
         );
       }
     });
@@ -185,10 +178,7 @@ const PageJoinUs = React.createClass({
         duration={1000}
         className="studio-jobs"
         ref="studioTab">
-        <div className="studio-info" ref="studioInfo">
-          {studioInfo}
-          {studioImage}
-        </div>
+        {studioInfo}
         {joblist}
       </TransitionManager>
     );

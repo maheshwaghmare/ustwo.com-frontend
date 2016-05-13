@@ -126,6 +126,7 @@
     .studio-jobs {
       position: relative;
       min-height: 75px;
+      overflow: hidden;
       transition: height .64s ease-in-out;
     }
 

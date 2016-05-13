@@ -14,27 +14,6 @@
     color: $nonBlack;
   }
 
-  .studio-info {
-    background: #777;
-
-    p {
-      margin: 0;
-    }
-    .excerpt {
-      padding: 10px 15px;
-      color: #fff;
-      font-size: 22px;
-      line-height: 1.2;
-    }
-    .studio-blurb {
-      display: none;
-    }
-    .photo {
-      height: 200px;
-    }
-  }
-
-
   .jobs-list {
     margin: 0;
     padding: 0;
@@ -85,54 +64,10 @@
     max-width: 1120px;
     margin: 0 auto;
 
-    &.all-studios-jobs {
-      .studio-info {
-        display: none;
-      }
-    }
-
     h3 {
       display: none;
     }
 
-    .studio-info {
-      display: flex;
 
-      > div {
-        width: 50%;
-      }
-
-      .info {
-        padding: 40px;
-      }
-
-      .excerpt {
-        padding: 0;
-        background: transparent;
-        font-size: 26px;
-      }
-
-      .studio-blurb {
-        position: relative;
-        display: block;
-        margin-top: 40px;
-        font-size: 16px;
-        color: #fff;
-
-        &:before {
-          content: "";
-          position: absolute;
-          top: -20px;
-          left: 0;
-          width: 22px;
-          height: 2px;
-          background: #fff;
-        }
-      }
-
-      .photo {
-        height: auto;
-      }
-    }
   }
 }
