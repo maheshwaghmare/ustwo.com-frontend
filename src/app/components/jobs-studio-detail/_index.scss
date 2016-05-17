@@ -1,11 +1,10 @@
 /*
- *  JOBS STUDIO INFO
+ *  JOBS STUDIO Detail
  *
  *
  */
 
-.jobs-studio-info {
-  background: #777;
+.jobs-studio-detail {
 
   p {
     margin: 0;
@@ -24,46 +23,28 @@
   }
 
   @media screen and (min-width: $bp-medium) {
-    display: flex;
+    position: absolute;
     height: 320px;
-    overflow: hidden;
-
-    > div {
-      position: absolute;
-      top: 0;
-      width: 50%;
-      height: 320px;
-      overflow: hidden;
-      transition: all .32s linear;
-    }
+    transition: opacity .32s ease-in-out;
 
     &.add {
-      > div {
-        // opacity: 0;
-        transform: translateY(320px);
-      }
+      opacity: 0;
     }
 
     &.show {
-      > div {
-        // opacity: 1;
-        transform: translateY(0);
-        // transition-delay: .32s;
-      }
+      opacity: 1;
+      transition-delay: .32s;
     }
 
     &.hide {
-      > div {
-        // opacity: 0;
-        transform: translateY(-320px);
-        transition-delay: 0s !important;
-        // transition-duration: .16s;
-      }
+      opacity: 0;
+      transition-delay: 0s !important;
     }
 
     .info {
       left: 0;
       padding: 40px;
+      height: 320px;
     }
 
     .excerpt {

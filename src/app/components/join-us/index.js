@@ -19,7 +19,8 @@ import DownChevron from 'app/components/down-chevron';
 import SVG from 'app/components/svg';
 import Hero from 'app/components/hero';
 import StudioJobs from 'app/components/studio-jobs';
-import JobsStudioInfo from 'app/components/jobs-studio-info';
+import JobsStudioDetail from 'app/components/jobs-studio-detail';
+import JobsStudioImage from 'app/components/jobs-studio-image';
 import JobsList from 'app/components/jobs-list';
 import Rimage from 'app/components/rimage';
 import Video from 'app/components/video';
@@ -72,14 +73,14 @@ const PageJoinUs = React.createClass({
 
     const activeTab = React.findDOMNode(this.refs.activeTab);
     const tabUnderline = React.findDOMNode(this.refs.underline);
-    const studioTab = React.findDOMNode(this.refs.studioTab);
-    const infoHeight = studioTab.querySelector('div', '[class="jobs-studio-info"]').offsetHeight;
-    const jobsListHeight = studioTab.querySelector('ul', '[class="jobs-list"]').offsetHeight;
+    const studioJobs = React.findDOMNode(this.refs.studioJobs);
+    // const infoHeight = studioTab.querySelector('div', '[class="jobs-studio-info"]').offsetHeight;
+    const jobsListHeight = studioJobs.querySelector('ul', '[class="jobs-list"]').offsetHeight;
 
     tabUnderline.style.width = `${activeTab.offsetWidth}px`;
     tabUnderline.style.left = `${activeTab.offsetLeft}px`;
 
-    studioTab.style.height = `${jobsListHeight + infoHeight}px`;
+    studioJobs.style.height = `${jobsListHeight}px`;
   },
   handleClick() {
     let getStudioTabs = React.findDOMNode(this.refs.studioTabs);
@@ -135,25 +136,69 @@ const PageJoinUs = React.createClass({
           <section className="jobs">
             <div className="jobs-container">
               {this.renderStudioTabs(selectedStudioSlug)}
-              {this.renderStudioJobs(selectedStudioSlug)}
+              <div className="studio-info">
+                {this.renderStudioDetail(selectedStudioSlug)}
+                {this.renderStudioImage(selectedStudioSlug)}
+              </div>
+                {this.renderStudioJobs(selectedStudioSlug)}
             </div>
           </section>
         </div>
       );
     };
   },
-  renderStudioJobs(selectedStudioSlug) {
+  renderStudioDetail(selectedStudioSlug) {
+    let studioDetail;
+    map(this.props.studios, studio => {
+      const studioSlug = kebabCase(studio.name);
+      if (studioSlug === selectedStudioSlug) {
+        studioDetail = (
+          <JobsStudioDetail
+            key={`studio-detail-${studioSlug}`}
+            studio={studio} />
+        );
+      }
+    });
 
-    // const classes = classnames('studio-jobs', `${id}-jobs`, {
-    //   selected: studioSlug === selectedStudioSlug
-    // });
-
-    let joblist;
-    let studioInfo;
+    return (
+      <TransitionManager
+        component="div"
+        duration={640}
+        className="studio-detail"
+        ref="studioDetail">
+        {studioDetail}
+      </TransitionManager>
+    );
+  },
+  renderStudioImage(selectedStudioSlug) {
+    let studioImage;
     map(this.props.studios, studio => {
       const studioSlug = kebabCase(studio.name);
       if (studioSlug === selectedStudioSlug) {
         const image = getFeaturedImage(studio);
+        studioImage = (
+          <JobsStudioImage
+            key={`studio-image-${studioSlug}`}
+            image={image} />
+        );
+      }
+    });
+
+    return (
+      <TransitionManager
+        component="div"
+        duration={640}
+        className="studio-image"
+        ref="studioImage">
+        {studioImage}
+      </TransitionManager>
+    );
+  },
+  renderStudioJobs(selectedStudioSlug) {
+    let joblist;
+    map(this.props.studios, studio => {
+      const studioSlug = kebabCase(studio.name);
+      if (studioSlug === selectedStudioSlug) {
         joblist = (
           <JobsList
             key={`jobs-${studioSlug}`}
@@ -163,56 +208,19 @@ const PageJoinUs = React.createClass({
             jobs={this.getJobsForStudio(studio)}
             contactEmail={get(find(get(find(get(this.props, 'footer.contacts', []), 'type', 'general'), 'methods', []), 'type', 'email'), 'uri', '')} />
         );
-        studioInfo = (
-          <JobsStudioInfo
-            key={`studio-info-${studioSlug}`}
-            studio={studio}
-            image={image} />
-        );
       }
     });
 
     return (
       <TransitionManager
         component="div"
-        duration={1000}
+        duration={640}
         className="studio-jobs"
-        ref="studioTab">
-        {studioInfo}
+        ref="studioJobs">
         {joblist}
       </TransitionManager>
     );
   },
-  // renderStudioNames() {
-  //   return map(this.props.studios, studio => {
-  //     return (
-  //       <h3>{studio.name}</h3>
-  //     );
-  //   });
-  // },
-  // renderStudioInfos() {
-  //   return map(this.props.studios, studio => {
-  //     return (
-  //       <div className="info" style={{ backgroundColor: studio.color }}>
-  //         <p className="excerpt">{get(studio, 'recruitment-title')}</p>
-  //         <p className="studio-blurb">{get(studio, 'recruitment-desc')}</p>
-  //       </div>
-  //     );
-  //   });
-  // },
-  // renderStudioImages() {
-  //   return map(this.props.studios, studio => {
-  //     const image = getFeaturedImage(studio);
-  //     return (
-  //       <Rimage
-  //         className="photo"
-  //         wrap="div"
-  //         sizes={get(image, 'media_details.sizes')}
-  //         altText={get(image, 'alt_text')}
-  //       />
-  //     );
-  //   });
-  // },
   getJobsForStudio(studio) {
     const allJobs = this.props.jobs || [];
     const { name } = studio;
