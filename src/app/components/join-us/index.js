@@ -70,11 +70,9 @@ const PageJoinUs = React.createClass({
   },
   componentDidUpdate() {
     const { jobItemOpen } = this.props;
-
     const activeTab = React.findDOMNode(this.refs.activeTab);
     const tabUnderline = React.findDOMNode(this.refs.underline);
     const studioJobs = React.findDOMNode(this.refs.studioJobs);
-    // const infoHeight = studioTab.querySelector('div', '[class="jobs-studio-info"]').offsetHeight;
     const jobsListHeight = studioJobs.querySelector('ul', '[class="jobs-list"]').offsetHeight;
 
     tabUnderline.style.width = `${activeTab.offsetWidth}px`;
@@ -126,7 +124,6 @@ const PageJoinUs = React.createClass({
     );
   },
   getJobSectionRenderer(selectedStudioSlug) {
-
     let studioDetail;
     let studioImage;
     let joblist;
@@ -157,71 +154,64 @@ const PageJoinUs = React.createClass({
       }
     });
 
+    return () => {
+      const sizes = { hardcoded: { url: '/images/joinus/current_openings.jpg' }};
 
-    if (document.body.offsetWidth < 768) {
-      return () => {
-        return (
-          <div key="job-section">
-            <div className="current-openings">
-              <h2>We're Hiring</h2>
-            </div>
-            <section className="jobs">
-              {map(this.props.studios, studio => {
-                const studioSlug = kebabCase(studio.name);
-                return (
-                  <div className="jobs-container">
-                    <div className="studio-info">
-                      {studioDetail}
-                      {studioImage}
-                    </div>
-                    {joblist}
-                  </div>
-                );
-              })}
-            </section>
-          </div>
-        );
-      }
-    } else {
-      return () => {
-        const sizes = { hardcoded: { url: '/images/joinus/current_openings.jpg' }};
-
-        return (
-          <div key="job-section">
-            <div className="current-openings">
-              <h2>We're Hiring</h2>
-            </div>
-            <section className="jobs">
-              <div className="jobs-container">
-                {this.renderStudioTabs(selectedStudioSlug)}
-                <div className="studio-info">
-                  <TransitionManager
-                    component="div"
-                    duration={640}
-                    className="studio-detail"
-                    ref="studioDetail">
-                    {studioDetail}
-                  </TransitionManager>
-                  <TransitionManager
-                    component="div"
-                    duration={640}
-                    className="studio-image"
-                    ref="studioImage">
-                    {studioImage}
-                  </TransitionManager>
-                </div>
-                <TransitionManager
-                  component="div"
-                  duration={640}
-                  className="studio-jobs"
-                  ref="studioJobs">
-                  {joblist}
-                </TransitionManager>
+      let content;
+      if (document.body.offsetWidth < 768) {
+        map(this.props.studios, studio => {
+          const studioSlug = kebabCase(studio.name);
+          content = (
+            <div className="jobs-container">
+              <div className="studio-info">
+                {studioDetail}
+                {studioImage}
               </div>
-            </section>
+              {joblist}
+            </div>
+          );
+        });
+      } else {
+        content = (
+          <div className="jobs-container">
+            {this.renderStudioTabs(selectedStudioSlug)}
+            <div className="studio-info">
+              <TransitionManager
+                component="div"
+                duration={640}
+                className="studio-detail"
+                ref="studioDetail">
+                {studioDetail}
+              </TransitionManager>
+              <TransitionManager
+                component="div"
+                duration={640}
+                className="studio-image"
+                ref="studioImage">
+                {studioImage}
+              </TransitionManager>
+            </div>
+            <TransitionManager
+              component="div"
+              duration={640}
+              className="studio-jobs"
+              ref="studioJobs">
+              {joblist}
+            </TransitionManager>
           </div>
-        );
-      };
+        )
+      }
+
+      return (
+        <div key="job-section">
+          <div className="current-openings">
+            <h2>We're Hiring</h2>
+          </div>
+          <section className="jobs">
+            {content}
+          </section>
+        </div>
+      );
     }
   },
   getJobsForStudio(studio) {
