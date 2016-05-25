@@ -121,10 +121,15 @@
     background: #aaa;
   }
 
+  .jobs-container {
+    padding: ($vertical-spacing * .5) 0;
+  }
+
   @media screen and (min-width: $bp-medium) {
     .jobs-container {
       max-width: 1120px;
       margin: 0 auto;
+      padding: 0;
     }
 
     .studio-info {

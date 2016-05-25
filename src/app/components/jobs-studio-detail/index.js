@@ -9,8 +9,8 @@ const JobsStudioDetail = React.createClass({
     const { studio, className } = this.props;
 
     return (
-      <div className={`jobs-studio-detail ${className}`}>
-        <div className="info" style={{ backgroundColor: studio.color }}>
+      <div className={`jobs-studio-detail ${className}`} style={{ backgroundColor: studio.color }}>
+        <div className="info">
           <p className="excerpt">{get(studio, 'recruitment-title')}</p>
           <p className="studio-blurb">{get(studio, 'recruitment-desc')}</p>
         </div>
