@@ -96,27 +96,6 @@
     background-color: $lightGrey;
   }
 
-  .jobs-studio-tabs {
-    display: none;
-    margin-bottom: 30px;
-    text-align: center;
-
-    .tab {
-      display: inline-block;
-      margin: 0 20px 10px 20px;
-      cursor: pointer;
-      font-family: $Futura;
-      font-size: 24px;
-      text-transform: uppercase;
-      color: $nonBlack;
-      transition: opacity $hover-duration-quick ease-in-out, color .32s ease-in-out;
-
-      &:hover:not([aria-selected="true"]) {
-        opacity: $hover-fade-back;
-      }
-    }
-  }
-
   .studio-info {
     background: #aaa;
   }
@@ -167,27 +146,6 @@
     .jobs {
       padding-bottom: 60px;
     }
-
-    .jobs-studio-tabs {
-      position: relative;
-      display: block;
-      max-width: 1120px;
-      margin-left: auto;
-      margin-right: auto;
-
-      .underline {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 4px;
-        width: 150px;
-        transition: all .3s ease-in-out;
-      }
-
-      &.animate .underline {
-        animation: underlineScale .5s 1;
-      }
-    }
   }
 
   @media screen and (min-width: $bp-large) {
@@ -195,17 +153,13 @@
       padding-bottom: 80px;
     }
 
-    .jobs-studio-tabs {
-      margin-bottom: 45px;
-
-      li {
-        font-size: 26px;
-      }
-    }
-
     .current-openings {
       padding-top: $vertical-spacing-large;
       padding-bottom: 60px;
+    }
+
+    .tabs {
+      margin-bottom: 45px;
     }
   }
 

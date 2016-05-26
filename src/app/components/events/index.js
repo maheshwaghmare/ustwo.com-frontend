@@ -4,18 +4,21 @@ import React from 'react';
 import get from 'lodash/object/get';
 import map from 'lodash/collection/map';
 import take from 'lodash/array/take';
+import kebabCase from 'lodash/string/kebabCase';
+import includes from 'lodash/collection/includes';
 import classnames from 'classnames';
 import isEqual from 'lodash/lang/isEqual';
+import pluck from 'lodash/collection/pluck';
 import Flux from 'app/flux';
 import Hero from 'app/components/hero';
 import Video from 'app/components/video';
 import SVG from 'app/components/svg';
-import EventsControls from 'app/components/events-controls';
 import EventsListItem from 'app/components/events-list-item';
 import ArchivedEventsListItem from 'app/components/events-archived-list-item';
 import LoadMoreButton from 'app/components/load-more-button';
 import LoadingIcon from 'app/components/loading-icon';
 import getFeaturedImage from 'app/lib/get-featured-image';
+import Tabs from 'app/components/tabs';
 
 const PageEvents = React.createClass({
   getInitialState() {
@@ -25,6 +28,18 @@ const PageEvents = React.createClass({
       isLoadingMoreEvents: false,
       isLoadingStudioEvents: false
     };
+  },
+  getStudios() {
+    const { studios } = this.props;
+    if(studios) {
+      return [{
+        name: 'All studios'
+      }].concat(studios);
+    } else {
+      return [{
+        name: 'All studios'
+      }];
+    }
   },
   componentWillMount() {
     if (this.props.events) {
@@ -100,7 +115,7 @@ const PageEvents = React.createClass({
       } else {
         output = <div className="no-events-found">
           <h2>Soz, No Talky</h2>
-          <p>We don't have any events on the horizon right now. If you're interested in hosting an event, 
+          <p>We don't have any events on the horizon right now. If you're interested in hosting an event,
           <br />or giving a talk - <a href="mailto:events@ustwo.com">let us know! </a></p>
           <SVG
             className="flying-cow"
@@ -133,6 +148,13 @@ const PageEvents = React.createClass({
     }
     return output;
   },
+  getSelectedStudio(studioSlugFromUrl, studioSlugs) {
+    let selected = 'all-studios';
+    if(includes(studioSlugs, studioSlugFromUrl)) {
+      selected = studioSlugFromUrl;
+    }
+    return selected;
+  },
   render() {
     const {
       isFilteredByStudio,
@@ -145,6 +167,12 @@ const PageEvents = React.createClass({
       loading: isLoadingInitialEvents || isLoadingStudioEvents
     });
     const image = getFeaturedImage(page);
+    const studioSlugFromUrl = get(currentParams, 'studio');
+    const studioSlugs = map(pluck(studios, 'name'), kebabCase);
+    const selectedStudioSlug = this.getSelectedStudio(studioSlugFromUrl, studioSlugs);
+
+    console.log("event");
+    console.log(studios);
 
     return <article className={classes}>
     	<Hero
@@ -152,17 +180,14 @@ const PageEvents = React.createClass({
         transitionImage={true}
         eventLabel="events"
         subheading={get(page, 'hero.attr.subheading.value')}
-        showDownChevron={true} 
+        showDownChevron={true}
       >
         <Video
           src={get(page, 'featured_video')}
           sizes={get(image, 'media_details.sizes')}
         />
     	</Hero>
-      <EventsControls
-        studios={studios}
-        currentParams={currentParams}
-      /> 
+      <Tabs studios={this.getStudios()} selected={selectedStudioSlug} page="events" />
       <section className="events-list">
 			  {this.renderEvents()}
         <LoadMoreButton
@@ -170,7 +195,7 @@ const PageEvents = React.createClass({
           onClick={this.onClickLoadMore}
           disabled={postsPagination >= postsPaginationTotal}
         />
-		  </section>      
+		  </section>
     </article>;
 	}
 });

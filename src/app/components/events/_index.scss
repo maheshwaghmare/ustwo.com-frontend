@@ -32,7 +32,7 @@
     background-color: $offWhite;
     padding: 40px;
     text-align: center;
-    
+
     h2 {
       margin-bottom: 20px;
     }
@@ -66,7 +66,7 @@
       border-bottom: 4px solid;
       border-top: none;
       border-left: none;
-      border-right: none;   
+      border-right: none;
       border-color: $softPassion;
       margin: 30px auto;
     }
@@ -75,7 +75,7 @@
       margin-top: 0;
     }
   }
-  
+
   &.loading {
 
     .events-list {
@@ -89,6 +89,23 @@
   }
 
   @media screen and (min-width: $bp-medium) {
+
+    .tabs {
+      position: absolute;
+      left: 50%;
+      bottom: calc(#{$events-controls-margin-bottom} - #{$events-margin-offset});
+      width: 100%;
+      transform: translateX(-50%);
+      z-index: 1;
+
+      .tab {
+        color: #fff !important;
+      }
+
+      .underline {
+        background-color: #fff !important;
+      }
+    }
 
     .events-list {
       display: flex;
@@ -115,4 +132,3 @@
     }
   }
 }
-

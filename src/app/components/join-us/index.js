@@ -24,6 +24,7 @@ import JobsStudioImage from 'app/components/jobs-studio-image';
 import JobsList from 'app/components/jobs-list';
 import Rimage from 'app/components/rimage';
 import Video from 'app/components/video';
+import Tabs from 'app/components/tabs';
 import Flux from 'app/flux';
 
 function getSelectedStudio(studioSlugFromUrl, studioSlugs) {
@@ -69,59 +70,12 @@ const PageJoinUs = React.createClass({
     );
   },
   componentDidUpdate() {
-    const { jobItemOpen } = this.props;
-    const activeTab = React.findDOMNode(this.refs.activeTab);
-    const tabUnderline = React.findDOMNode(this.refs.underline);
     const studioJobs = React.findDOMNode(this.refs.studioJobs);
     const jobsListHeight = studioJobs.querySelector('ul', '[class="jobs-list"]').offsetHeight;
-
-    tabUnderline.style.width = `${activeTab.offsetWidth}px`;
-    tabUnderline.style.left = `${activeTab.offsetLeft}px`;
 
     if (document.body.offsetWidth > 767) {
       studioJobs.style.height = `${jobsListHeight}px`;
     }
-  },
-  handleClick() {
-    let getStudioTabs = React.findDOMNode(this.refs.studioTabs);
-    getStudioTabs.classList.remove('animate');
-    setTimeout(() => {
-      getStudioTabs.classList.add('animate')
-    }, 0);
-  },
-  renderStudioTabs(selectedStudioSlug) {
-    let studioSelectedBackgroundColor;
-    const tabs = map(this.props.studios, studio => {
-      let studioSelectedColor;
-      const studioSlug = kebabCase(studio.name);
-      const studioName = spannify(studio.name);
-      const uri = `/join-us/${studioSlug}`;
-      if (studioSlug === selectedStudioSlug) {
-        studioSelectedColor = {color: studio.color}
-        studioSelectedBackgroundColor = {backgroundColor: studio.color}
-      }
-
-      return (
-        <div
-          key={`tab-${studioSlug}`}
-          aria-selected={studioSlug === selectedStudioSlug}
-          className={`tab ${studioSlug} ${studioSlug === selectedStudioSlug ? 'active' : ''}`}
-          ref={studioSlug === selectedStudioSlug ? 'activeTab' : ''}
-          onClick={this.handleClick.bind(this)}
-          style={studioSelectedColor}>
-          <a
-            href={uri}
-            onClick={Flux.overrideNoScroll(uri)}>{studioName}</a>
-        </div>
-      );
-    });
-
-    return (
-      <div className="jobs-studio-tabs" ref="studioTabs">
-        {tabs}
-        <div className="underline" style={studioSelectedBackgroundColor} ref="underline"></div>
-      </div>
-    );
   },
   getJobSectionRenderer(selectedStudioSlug) {
     let studioDetail;
@@ -174,7 +128,7 @@ const PageJoinUs = React.createClass({
       } else {
         content = (
           <div className="jobs-container">
-            {this.renderStudioTabs(selectedStudioSlug)}
+            <Tabs studios={this.props.studios} selected={selectedStudioSlug} page="join-us" />
             <div className="studio-info">
               <TransitionManager
                 component="div"
