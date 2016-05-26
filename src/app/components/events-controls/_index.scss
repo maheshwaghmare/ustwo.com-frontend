@@ -14,7 +14,7 @@
   width: 100%;
   background-color: $lightGrey;
 
-  li {
+  .tab {
     display: inline-block;
     margin: 0 20px 0 20px;
     cursor: pointer;
@@ -42,7 +42,7 @@
     bottom: calc(#{$events-controls-margin-bottom} - #{$events-margin-offset});
     background-color: transparent;
 
-    li {
+    .tab {
       color: #fff;
 
       &:not(:first-child) {
@@ -52,7 +52,7 @@
   }
 
   @media screen and (min-width: $bp-large) {
-      li {
+      .tab {
         font-size: 26px;
 
         &.all-studios {
