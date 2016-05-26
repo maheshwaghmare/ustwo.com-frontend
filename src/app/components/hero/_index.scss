@@ -115,4 +115,23 @@
     transition: opacity .8s ease-in-out;
     transition-delay: 1.3s;
   }
+
+  .entrance-transition {
+    .title,
+    .subheading {
+      opacity: 0;
+      transition: opacity .32s ease-in-out .6s;
+    }
+
+    &.show {
+      .title,
+      .subheading {
+        opacity: 1;
+      }
+
+      .subheading {
+        transition-delay: 1.4s
+      }
+    }
+  }
 }

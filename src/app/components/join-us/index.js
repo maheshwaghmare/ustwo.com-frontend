@@ -78,54 +78,41 @@ const PageJoinUs = React.createClass({
     }
   },
   getJobSectionRenderer(selectedStudioSlug) {
-    let studioDetail;
-    let studioImage;
-    let joblist;
-    map(this.props.studios, studio => {
-      const studioSlug = kebabCase(studio.name);
-      if (studioSlug === selectedStudioSlug) {
-        studioDetail = (
-          <JobsStudioDetail
-            key={`studio-detail-${studioSlug}`}
-            studio={studio} />
-        );
-        const image = getFeaturedImage(studio);
-        studioImage = (
-          <JobsStudioImage
-            key={`studio-image-${studioSlug}`}
-            image={image}
-            studio={studio} />
-        );
-        joblist = (
-          <JobsList
-            key={`jobs-${studioSlug}`}
-            studio={studio}
-            ref="jobsList"
-            studios={this.props.studios}
-            jobs={this.getJobsForStudio(studio)}
-            contactEmail={get(find(get(find(get(this.props, 'footer.contacts', []), 'type', 'general'), 'methods', []), 'type', 'email'), 'uri', '')} />
-        );
-      }
-    });
 
     return () => {
       const sizes = { hardcoded: { url: '/images/joinus/current_openings.jpg' }};
-
       let content;
-      if (document.body.offsetWidth < 768) {
+
+      if (document.body.offsetWidth > 767) {
+        let studioDetail;
+        let studioImage;
+        let joblist;
         map(this.props.studios, studio => {
           const studioSlug = kebabCase(studio.name);
-          content = (
-            <div className="jobs-container">
-              <div className="studio-info">
-                {studioDetail}
-                {studioImage}
-              </div>
-              {joblist}
-            </div>
-          );
+          if (studioSlug === selectedStudioSlug) {
+            studioDetail = (
+              <JobsStudioDetail
+                key={`studio-detail-${studioSlug}`}
+                studio={studio} />
+            );
+            const image = getFeaturedImage(studio);
+            studioImage = (
+              <JobsStudioImage
+                key={`studio-image-${studioSlug}`}
+                image={image}
+                studio={studio} />
+            );
+            joblist = (
+              <JobsList
+                key={`jobs-${studioSlug}`}
+                studio={studio}
+                ref="jobsList"
+                studios={this.props.studios}
+                jobs={this.getJobsForStudio(studio)}
+                contactEmail={get(find(get(find(get(this.props, 'footer.contacts', []), 'type', 'general'), 'methods', []), 'type', 'email'), 'uri', '')} />
+            );
+          }
         });
-      } else {
         content = (
           <div className="jobs-container">
             <Tabs studios={this.props.studios} selected={selectedStudioSlug} page="join-us" />
@@ -153,7 +140,33 @@ const PageJoinUs = React.createClass({
               {joblist}
             </TransitionManager>
           </div>
-        )
+        );
+      } else {
+        content = map(this.props.studios, studio => {
+          const studioSlug = kebabCase(studio.name);
+          const image = getFeaturedImage(studio);
+
+          return (
+            <div className="jobs-container">
+              <div className="studio-info">
+                <JobsStudioDetail
+                  key={`studio-detail-${studioSlug}`}
+                  studio={studio} />
+                <JobsStudioImage
+                  key={`studio-image-${studioSlug}`}
+                  image={image}
+                  studio={studio} />
+              </div>
+              <JobsList
+                key={`jobs-${studioSlug}`}
+                studio={studio}
+                ref="jobsList"
+                studios={this.props.studios}
+                jobs={this.getJobsForStudio(studio)}
+                contactEmail={get(find(get(find(get(this.props, 'footer.contacts', []), 'type', 'general'), 'methods', []), 'type', 'email'), 'uri', '')} />
+            </div>
+          );
+        });
       }
 
       return (
