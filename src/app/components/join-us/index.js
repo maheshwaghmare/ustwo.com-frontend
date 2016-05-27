@@ -69,11 +69,17 @@ const PageJoinUs = React.createClass({
       </article>
     );
   },
-  componentDidUpdate() {
-    const studioJobs = React.findDOMNode(this.refs.studioJobs);
-    const jobsListHeight = studioJobs.querySelector('ul', '[class="jobs-list"]').offsetHeight;
-
+  componentDidMount() {
     if (document.body.offsetWidth > 767) {
+      const studioJobs = React.findDOMNode(this.refs.studioJobs);
+      const jobsListHeight = studioJobs.querySelector('ul', '[class="jobs-list"]').offsetHeight;
+      studioJobs.style.height = `${jobsListHeight}px`;
+    }
+  },
+  componentDidUpdate() {
+    if (document.body.offsetWidth > 767) {
+      const studioJobs = React.findDOMNode(this.refs.studioJobs);
+      const jobsListHeight = studioJobs.querySelector('ul', '[class="jobs-list"]').offsetHeight;
       studioJobs.style.height = `${jobsListHeight}px`;
     }
   },
